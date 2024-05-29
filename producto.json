@@ -1,0 +1,12 @@
+{
+    "nombre":"pava",
+    "precio":5000
+}
+
+
+
+{
+    "nombre":"pava",
+    "precio":5000,
+    "cantidad": 1
+}
