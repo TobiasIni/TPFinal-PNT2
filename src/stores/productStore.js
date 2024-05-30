@@ -3,7 +3,7 @@ import axios from 'axios';
 
 export const useProductStore = defineStore('productStore', {
     state: () => ({
-        productos: [],
+        eventos: [],
         cart: JSON.parse(localStorage.getItem('cart')) || [] // Obtener del local Storage 
     }),
     getters: {
@@ -15,12 +15,20 @@ export const useProductStore = defineStore('productStore', {
         }
     },
     actions: {
-        async fetchProductos(){
+        async fetchEventos(){
             try {
-                
-                const response = await axios.get('https://664e8e3ffafad45dfae065a1.mockapi.io/api/v1/productos')
-                this.productos = response.data;
-
+                const response = await axios.get('https://api.seatgeek.com/2/events?client_id=NDE4ODk4ODJ8MTcxNzAyNDc0MS44MjkzMjcz')
+                const data = response.data.events;
+                this.eventos = data.map(event => {
+                    var precioRandom = Math.random() * 100
+                    return {
+                        name: event.title || 'No Name Available',
+                        description: event.description || 'No Description Available',
+                        location: event.venue.display_location || 'No Location Available',
+                        imageUrl: event.performers[0].image || 'No Image Available',
+                        price: precioRandom.toFixed(2)
+                    };
+                });
             } catch (error) {
                 console.error('El error es: ', error)
             }

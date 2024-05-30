@@ -22,17 +22,18 @@ export default {
     },
     computed: {
         productos(){
-            return this.productStore.productos
+            return this.productStore.eventos
         }
     },
     methods: {
         // Llamar Productos
-        fetchProductos(){
-            this.productStore.fetchProductos()
+        fetchEventos(){
+            this.productStore.fetchEventos()
+            console.log("Eventos: " , this.productos)
         }
     },
     mounted(){
-        this.fetchProductos();
+        this.fetchEventos();
     }
     
 }
