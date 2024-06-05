@@ -4,8 +4,8 @@
             <component :is="currentForm" />
         </div>
         <div class="switch-container">
-            <span v-if="currentForm === 'LoginForm'">No tenes cuenta? <a @click="cambiarForm">Registrate</a></span>
-            <span v-else>Ya tenes cuenta? <a @click="cambiarForm">Inicia Sesion</a></span>
+            <span v-if="currentForm === 'LoginForm'">¿No tenés cuenta? <a @click="cambiarForm">Registrate</a></span>
+            <span v-else>¿Ya tenés cuenta? <a @click="cambiarForm">Iniciá sesión</a></span>
         </div>
     </div>
 </template>
