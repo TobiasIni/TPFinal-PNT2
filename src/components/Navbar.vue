@@ -30,39 +30,43 @@
 </template>
 
 <script>
-
 import { useEventStore } from '../stores/eventStore.js';
 import { useAuthStore } from '../stores/authStore';
 
-
 export default {
   computed: {
-    isAuthenticated(){
-      const authStore = useAuthStore();
-      return authStore.isAuthenticated
+    isAuthenticated() {
+      return this.authStore.isAuthenticated;
     },
-    isAdmin(){
-      const authStore = useAuthStore();
-      return authStore.isAdmin;
+    isAdmin() {
+      return this.authStore.isAdmin;
     },
-    cantidadCarrito(){
-      const evetnStore = useEventStore();
-      return evetnStore.cantidadCarrito;
+    cantidadCarrito() {
+      return this.eventStore.cantidadCarrito;
     }
   },
-  methods:{
-    logout(){
-      const authStore = useAuthStore();
-      authStore.logout();
-      this.$router.push({ name: 'Login'})
+  methods: {
+    logout() {
+      this.authStore.logout();
+      this.$router.push({ name: 'Login' });
     }
   },
-  mounted(){
-    const authStore = useAuthStore();
-    authStore.checkAuth();
+  mounted() {
+    this.authStore.checkAuth();
+  },
+  created() {
+    this.authStore = useAuthStore();
+    this.eventStore = useEventStore();
+  },
+  data() {
+    return {
+      authStore: null,
+      eventStore: null,
+    };
   }
 }
 </script>
+
 
 <style scoped>
 .navbar {

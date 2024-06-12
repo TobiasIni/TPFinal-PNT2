@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Estos son las fiestas que tenemos para vos!</h1>
+        <h1>¡Estos son las eventos que tenemos para vos!</h1>
         <div class="event-list">
             <Evento v-for="evento in eventos" :key="evento.id" :evento="evento" />
         </div>

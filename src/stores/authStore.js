@@ -8,7 +8,7 @@ export const useAuthStore = defineStore('auth', {
         isAdmin: false
     }),
     actions: {
-        async login(username, password){
+        async login(username, password) {
 
             try {
                 const response = await fetch('https://664e8e3ffafad45dfae065a1.mockapi.io/api/v1/usuarios')
@@ -16,15 +16,15 @@ export const useAuthStore = defineStore('auth', {
 
                 const user = users.find(user => user.username === username && user.password === password)
 
-                if(user) {
+                if (user) {
                     this.isAuthenticated = true;
                     this.user = user;
                     this.isAdmin = user.admin;
                     localStorage.setItem('isAuthenticated', 'true')
                     localStorage.setItem('isAdmin', user.admin ? 'true' : 'false')
                     localStorage.setItem('user', JSON.stringify(user))
-                }else{
-                    alert('Usuario o Contrasena no valido')
+                } else {
+                    alert('Usuario o contraseña no válido')
                 }
 
             } catch (error) {
@@ -41,8 +41,8 @@ export const useAuthStore = defineStore('auth', {
             //     alert('Usuario no válido')
             //   } 
         },
-        async register(username, email, password){
-            if(username && email && password){
+        async register(username, email, password) {
+            if (username && email && password) {
                 try {
                     const user = {
                         username,
@@ -65,23 +65,23 @@ export const useAuthStore = defineStore('auth', {
                     localStorage.setItem('user', JSON.stringify(user))
                 } catch (error) {
                     console.log('ERROR: ', error);
-                    
+
                 }
-            }else{
-                alert('Completa todos los datos')
+            } else {
+                alert('Completá todos los datos')
             }
         },
-        logout(){
+        logout() {
             this.isAuthenticated = false;
             this.user = null;
             this.isAdmin = false;
             localStorage.removeItem('isAuthenticated');
             localStorage.removeItem('isAdmin')
         },
-        checkAuth(){
+        checkAuth() {
             this.isAuthenticated = localStorage.getItem('isAuthenticated' === true);
             this.isAdmin = localStorage.getItem('isAdmin') === 'true' ? true : false
-            if(this.isAuthenticated){
+            if (this.isAuthenticated) {
                 this.user = JSON.parse(localStorage.getItem('user'))
             }
         }

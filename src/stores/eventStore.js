@@ -29,9 +29,9 @@ export const useEventStore = defineStore('eventStore', {
             try {
                 //Verifico si la base de datos ya fue inicializada para evitar que el proceso se repita cada vez
                 //que se refresca el navegados
-                const estaInicualizada = localStorage.getItem('dbIncializada');
-                if (estaInicualizada) {
-                    console.log('Base de datos INICIALIZADA.');
+                const estaInicializada = localStorage.getItem('dbIncializada');
+                if (estaInicializada) {
+                    //console.log('Base de datos INICIALIZADA.');
                     return;
                 }
                 // Hago un get para chequear si la BD este vacia

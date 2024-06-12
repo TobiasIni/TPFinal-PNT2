@@ -2,8 +2,8 @@
   <div class="login-form-container">
     <h1>Login</h1>
     <form @submit.prevent="login" class="login-form">
-      <input v-model="username" type="text" placeholder="Username" class="login-input"/>
-      <input v-model="password" type="password" placeholder="Password" class="login-input"/>
+      <input v-model="username" type="text" placeholder="Username" class="login-input" />
+      <input v-model="password" type="password" placeholder="Password" class="login-input" />
       <button type="submit" class="login-button">Login</button>
     </form>
   </div>
@@ -13,25 +13,25 @@
 import { useAuthStore } from '@/stores/authStore';
 
 export default {
-  data(){
+  data() {
     return {
       username: '',
       password: ''
     }
   },
-  methods:{
-    async login(){
+  methods: {
+    async login() {
       const authStore = useAuthStore();
       await authStore.login(this.username, this.password);
-      if (authStore.isAuthenticated){
-        this.$router.push({ name: 'Home'})
+      if (authStore.isAuthenticated) {
+        this.$router.push({ name: 'Home' })
       }
     }
   },
-  mounted(){
+  mounted() {
     const authStore = useAuthStore();
     authStore.checkAuth();
-    if( authStore.isAuthenticated ){
+    if (authStore.isAuthenticated) {
       this.$router.push({ name: 'Home' })
     }
   }
@@ -40,12 +40,13 @@ export default {
 
 <style scoped>
 .login-form-container {
-  max-width: 500px; /* Aumentar el tamaño máximo del contenedor */
+  max-width: 500px;
+  /* Aumentar el tamaño máximo del contenedor */
   margin: auto;
   padding: 2rem;
   background: white;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .login-form {
