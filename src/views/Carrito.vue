@@ -8,7 +8,7 @@
     </div>
 </template>
 <script>
-import { useProductStore } from '../stores/productStore';
+import { useEventStore } from '../stores/eventStore.js';
 import CartItem from '../components/CartItem.vue'
 
 export default {
@@ -17,12 +17,12 @@ export default {
     },
     computed:{
         cantidadCarrito(){
-            const productStore = useProductStore();
-            return productStore.cantidadCarrito;
+            const eventStore = useEventStore();
+            return eventStore.cantidadCarrito;
         },
         productosCarrito(){
-            const productStore = useProductStore();
-            return productStore.cart
+            const eventStore = useEventStore();
+            return eventStore.cart
         }
     }
     

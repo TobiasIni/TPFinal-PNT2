@@ -13,7 +13,7 @@
           <router-link class="nav-link" to="/perfil">Perfil</router-link>
         </li>
         <li class="nav-item" v-if="isAdmin">
-          <router-link class="nav-link" to="/crear-producto">Crear Producto</router-link>
+          <router-link class="nav-link" to="/crear-evento">Crear Evento</router-link>
         </li>
         <li class="nav-item" v-if="isAuthenticated">
           <button @click="logout" class="nav-link logout-button">Logout</button>
@@ -31,7 +31,7 @@
 
 <script>
 
-import { useProductStore } from '@/stores/productStore';
+import { useEventStore } from '../stores/eventStore.js';
 import { useAuthStore } from '../stores/authStore';
 
 
@@ -46,8 +46,8 @@ export default {
       return authStore.isAdmin;
     },
     cantidadCarrito(){
-      const productStore = useProductStore();
-      return productStore.cantidadCarrito;
+      const evetnStore = useEventStore();
+      return evetnStore.cantidadCarrito;
     }
   },
   methods:{

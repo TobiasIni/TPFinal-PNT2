@@ -1,4 +1,5 @@
 import './assets/main.css'
+import { useEventStore } from '../src/stores/eventStore.js'
 
 import { createApp } from 'vue'
 import App from './App.vue'
@@ -13,4 +14,7 @@ app.use(pinia)
 app.use(router)
 app.mount('#app')
 
-//createApp(App).use(router).mount('#app')
+//Inicializo la base de datos
+useEventStore().inicializarBaseDatos().then(() => {
+    console.log('Base de datos inicializada');
+});

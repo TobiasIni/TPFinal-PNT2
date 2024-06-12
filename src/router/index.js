@@ -4,7 +4,7 @@ import Login from '../views/Login.vue'
 import Perfil from '../views/Perfil.vue'
 import NotFound from '../views/NotFound.vue'
 import Carrito from '@/views/Carrito.vue';
-import CrearProducto from '@/views/CrearProducto.vue';
+import CrearEvento from '@/views/CrearEvento.vue';
 
 
 const routes = [
@@ -45,9 +45,9 @@ const routes = [
         }
     },
     {
-        path: '/crear-producto',
-        name: 'CrearProducto',
-        component: CrearProducto,
+        path: '/crear-evento',
+        name: 'CrearEvento',
+        component: CrearEvento,
         meta: {
             requiereAuth: true
         }

@@ -1,35 +1,34 @@
 <template>
     <div>
-        <h1>Hola Home</h1>
-        <div class="product-list">
-            <Producto v-for="product in productos" :key="product.id" :product="product" />
+        <h1>Estos son las fiestas que tenemos para vos!</h1>
+        <div class="event-list">
+            <Evento v-for="evento in eventos" :key="evento.id" :evento="evento" />
         </div>
     </div>
 </template>
 <script>
 
-import Producto from '../components/Producto.vue'
-import { useProductStore } from '../stores/productStore.js'
+import Evento from '../components/Evento.vue'
+import { useEventStore } from '../stores/eventStore.js'
 
 export default {
     components: {
-        Producto
+        Evento
     },
     data(){
         return {
-            productStore: useProductStore()
+            eventStore: useEventStore()
         }
     },
     computed: {
-        productos(){
-            return this.productStore.eventos
+        eventos(){
+            return this.eventStore.eventos
         }
     },
     methods: {
-        // Llamar Productos
         fetchEventos(){
-            this.productStore.fetchEventos()
-            console.log("Eventos: " , this.productos)
+            this.eventStore.fetchEventos()
+            console.log("Eventos: " , this.eventos)
         }
     },
     mounted(){
@@ -39,7 +38,7 @@ export default {
 }
 </script>
 <style scoped>
-.product-list {
+.event-list {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;

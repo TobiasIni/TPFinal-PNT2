@@ -10,7 +10,7 @@
 </template>
 <script>
 
-import { useProductStore } from '../stores/productStore';
+import { useEventStore } from '../stores/eventStore.js';
 
 export default {
     props: {
@@ -18,8 +18,8 @@ export default {
     },
     methods:{
         removerDelCarrito(){
-            const productStore = useProductStore()
-            productStore.removerDelCarrito(this.item)
+            const eventStore = useEventStore()
+            eventStore.removerDelCarrito(this.item)
         }
     }
 }
