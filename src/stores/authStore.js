@@ -3,32 +3,38 @@ import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
-
-        sessionDuration: 1 * 1 * 1000, // 30 minutos en milisegundos
+        mockApiAuth: 'https://666a387b7013419182ce91d4.mockapi.io/users' ,
         isAuthenticated: false,
         user: null,
-        isAdmin: false
+        isAdmin: false,
+        isEmployee: false
     }),
     actions: {
         async login(username, password) {
 
             try {
-                const response = await fetch('https://664e8e3ffafad45dfae065a1.mockapi.io/api/v1/usuarios')
-                const users = await response.json()
-
+                const response = await axios.get(this.mockApiAuth)
+                const users = response.data
                 const user = users.find(user => user.username === username && user.password === password)
+                console.log('usuario: ' , user)
 
                 if(user) {
+                    
                     const currentTime = new Date().getTime();
 
                     //cambiar la logica booleana para decidir si es admin por una logica con roles "ADMIN", "EMPLEADO", "USUARIO"
                     this.isAuthenticated = true;
                     this.user = user;
-                    this.isAdmin = user.admin;
+                    if(user.role.toLowerCase === 'admin'.toLowerCase){
+                        this.isAdmin = true;
+                    }else if(user.role.toLowerCase === 'employee'.toLowerCase){
+                        this.isEmployee=true;
+                    }
                     
                     localStorage.setItem('isAuthenticated', 'true')
                     localStorage.setItem('isAdmin', user.admin ? 'true' : 'false')
                     localStorage.setItem('user', JSON.stringify(user))
+                    localStorage.setItem('isEmployee', this.isEmployee ? 'true' : 'false')
                     localStorage.setItem('sessionStart', currentTime);
                     localStorage.setItem('sessionDuration', this.sessionDuration);
                 }else{
@@ -39,19 +45,20 @@ export const useAuthStore = defineStore('auth', {
                 console.error('Error en Login: ', error)
             }
         },
-        async register(username, email, password) {
-            if (username && email && password) {
+        async register(username, email, password, location, role) {
+            if (username && email && password && location && role) {
                 try {
                     const user = {
                         username,
                         email,
                         password,
-                        location
+                        location,
+                        role
                     }
 
                     console.log('usuario : ', user);
 
-                    const response = await axios.post('https://664e8e3ffafad45dfae065a1.mockapi.io/api/v1/usuarios', user)
+                    const response = await axios.post(this.mockApiAuth, user)
 
                     console.log('RESPONSE: ', response);
                     const data = await response.data;
@@ -79,6 +86,7 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('user');
             localStorage.removeItem('sessionStart');
             localStorage.removeItem('sessionDuration');
+            localStorage.removeItem('isEmployee');
         },
         checkAuth() {
             const sessionStart = localStorage.getItem('sessionStart');
@@ -109,6 +117,3 @@ export const useAuthStore = defineStore('auth', {
         }
     }
 })
-
-
-

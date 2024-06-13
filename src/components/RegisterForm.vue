@@ -1,30 +1,43 @@
 <template>
-    <div class="register-form-container">
-        <h1>Registro</h1>
-        <form  @submit.prevent="register" class="register-form">
-            <input v-model="username" type="text" placeholder="Username" class="register-input"/>
-            <input v-model="email" type="email" placeholder="Email" class="register-input"/>
-            <input v-model="password" type="password" placeholder="Password" class="register-input"/>
-            <button type="submit" class="register-button">Registro</button>
+  <div class="register-form-container">
+    <h1>Registro</h1>
+    <form  @submit.prevent="register" class="register-form">
+      <input v-model="username" type="text" placeholder="Username" class="register-input" required/>
+      <input v-model="email" type="email" placeholder="Email" class="register-input" required/>
+      <input v-model="password" type="password" placeholder="Password" class="register-input" required/>
+      <input v-model="location" type="text" placeholder="location" class="register-input" required/>
+      <select v-model="role" class="register-input" required> //tenemos que ver la forma de agregar la condicion de admin
+        <option disabled value="">Seleccione un rol</option>
+        <option value='ADMIN' >Admin</option>
+        <option value="EMPLOYEE">Empleado</option>
+        <option value="USER">Usuario</option>
+        </select>
+        <button type="submit" class="register-button">Registro</button>
         </form>
-    </div>
+        </div>
 </template>
 <script>
 
 import { useAuthStore } from '../stores/authStore'
+import {Roles} from '../constants/roles.js'
 
 export default {
-    data(){
-        return{
-            username: '',
-            email: '',
-            password: ''
+  data(){
+    return{
+      username: '',
+      email: '',
+      password: '',
+            location:'',
+            role:Roles.USER
         }
     },
+    
+
     methods:{
         async register() {
             const authStore = useAuthStore();
-            await authStore.register(this.username, this.email, this.password);
+            await authStore.register(this.username, this.email, this.password, this.location, this.role);
+            console.log(this.role)
             if (authStore.isAuthenticated){
                 this.$router.push({ name: 'Home'})
             }
