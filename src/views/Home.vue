@@ -28,7 +28,6 @@ export default {
     methods: {
         fetchEventos(){
             this.eventStore.fetchEventos()
-            console.log("Eventos: " , this.eventos)
         }
     },
     mounted(){

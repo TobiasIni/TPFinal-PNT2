@@ -23,18 +23,15 @@ export default {
     computed: {
         enCarrito() {
             const eventStore = useEventStore();
-            console.log('Event Store: ', eventStore);
             return eventStore.estaEnCarrito(this.evento.id)
         }
     },
     methods: {
         cambiarCarrito(){
-            console.log('click carrito');
             const eventStore = useEventStore();
             if(this.enCarrito) {
                 eventStore.removerDelCarrito(this.evento);
             }else{
-              console.log('this producto es: ', this.evento);
                 eventStore.agregarAlCarrito(this.evento);
             }
         }
