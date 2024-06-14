@@ -15,7 +15,5 @@ app.use(pinia)
 app.use(router)
 app.mount('#app')
 
-useAuthStore().checkAuth();
-
 //Inicializo la base de datos
 useEventStore().inicializarBaseDatos();

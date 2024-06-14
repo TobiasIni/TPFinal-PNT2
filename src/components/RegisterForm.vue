@@ -6,15 +6,13 @@
       <input v-model="email" type="email" placeholder="Email" class="register-input" required/>
       <input v-model="password" type="password" placeholder="Password" class="register-input" required/>
       <input v-model="location" type="text" placeholder="location" class="register-input" required/>
-      <select v-model="role" class="register-input" required> //tenemos que ver la forma de agregar la condicion de admin
+      <select v-model="role" class="register-input" required>
         <option disabled value="">Seleccione un rol</option>
-        <option value='ADMIN' >Admin</option>
-        <option value="EMPLOYEE">Empleado</option>
-        <option value="USER">Usuario</option>
-        </select>
-        <button type="submit" class="register-button">Registro</button>
-        </form>
-        </div>
+        <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
+      </select>
+      <button type="submit" class="register-button">Registro</button>
+    </form>
+  </div>
 </template>
 <script>
 
@@ -23,16 +21,15 @@ import {Roles} from '../constants/roles.js'
 
 export default {
   data(){
-    return{
-      username: '',
-      email: '',
-      password: '',
-            location:'',
-            role:Roles.USER
-        }
+    return {
+        username: '',
+        email: '',
+        password: '',
+        location:'',
+        role: Roles.USER,
+        roles: Object.values(Roles)
+      };
     },
-    
-
     methods:{
         async register() {
             const authStore = useAuthStore();

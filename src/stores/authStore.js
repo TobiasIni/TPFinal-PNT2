@@ -1,9 +1,11 @@
 import { defineStore } from 'pinia';
 import axios from 'axios'
+import { Roles } from '../constants/roles.js'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         mockApiAuth: 'https://666a387b7013419182ce91d4.mockapi.io/users' ,
+        sessionDuration: 5 * 60 * 1000, // 5 minutos en milisegundos
         isAuthenticated: false,
         user: null,
         isAdmin: false,
@@ -11,32 +13,45 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async login(username, password) {
-
+            console.log("isEmployee: " + this.isEmployee)
             try {
+                console.log("isEmployee: " + this.isEmployee)
                 const response = await axios.get(this.mockApiAuth)
                 const users = response.data
                 const user = users.find(user => user.username === username && user.password === password)
-                console.log('usuario: ' , user)
+                console.log("isEmployee: " + this.isEmployee)
 
                 if(user) {
-                    
+                    console.log("isEmployee: " + this.isEmployee)
                     const currentTime = new Date().getTime();
-
-                    //cambiar la logica booleana para decidir si es admin por una logica con roles "ADMIN", "EMPLEADO", "USUARIO"
                     this.isAuthenticated = true;
                     this.user = user;
-                    if(user.role.toLowerCase === 'admin'.toLowerCase){
+
+                    console.log("isEmployee: " + this.isEmployee)
+
+                    console.log("estoy dentro del if grande ANTES de la validacion isAdmin")
+                    console.log(user)
+                    if(user.role.toUpperCase() === Roles.ADMIN){
+                        console.log("isEmployee: " + this.isEmployee)
+                        console.log("Role Admin validado")
                         this.isAdmin = true;
-                    }else if(user.role.toLowerCase === 'employee'.toLowerCase){
-                        this.isEmployee=true;
+                    }else if(user.role.toUpperCase() === Roles.EMPLOYEE){
+                        console.log("isEmployee: " + this.isEmployee)
+                        console.log("Role employee validado")
+                        this.isEmployee = true;
                     }
+
+                    console.log("isEmployee: " + this.isEmployee)
                     
                     localStorage.setItem('isAuthenticated', 'true')
-                    localStorage.setItem('isAdmin', user.admin ? 'true' : 'false')
+                    localStorage.setItem('isAdmin', this.isAdmin ? 'true' : 'false')
                     localStorage.setItem('user', JSON.stringify(user))
                     localStorage.setItem('isEmployee', this.isEmployee ? 'true' : 'false')
                     localStorage.setItem('sessionStart', currentTime);
                     localStorage.setItem('sessionDuration', this.sessionDuration);
+                    console.log('test')
+                    console.log(this.isAdmin)
+                    console.log(this.isEmployee)
                 }else{
                     alert('Usuario o Contrasena no valido')
                 }
@@ -81,37 +96,32 @@ export const useAuthStore = defineStore('auth', {
             this.isAuthenticated = false;
             this.user = null;
             this.isAdmin = false;
+            this.isEmployee = false;
             localStorage.removeItem('isAuthenticated');
             localStorage.removeItem('isAdmin');
+            localStorage.removeItem('isEmployee');
             localStorage.removeItem('user');
             localStorage.removeItem('sessionStart');
             localStorage.removeItem('sessionDuration');
-            localStorage.removeItem('isEmployee');
         },
         checkAuth() {
             const sessionStart = localStorage.getItem('sessionStart');
             const sessionDuration = localStorage.getItem('sessionDuration');
             const currentTime = new Date().getTime();
 
-            console.log('estoy en checkAuth')
-
             if (sessionStart && sessionDuration) {
-                console.log('estoy en primer if')
                 const sessionAge = currentTime - sessionStart;
                 if (sessionAge > sessionDuration) {
-                    console.log('estoy en logout')
                     this.logout();
                 } else {
-                    console.log('estoy en else ')
                     this.isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-                    // cambiarlo justo con la logica de roles
                     this.isAdmin = localStorage.getItem('isAdmin') === 'true';
+                    this.isEmployee = localStorage.getItem('isEmployee') === 'true';
                     if (this.isAuthenticated) {
                         this.user = JSON.parse(localStorage.getItem('user'));
                     }
                 }
             } else {
-                console.log('estoy en else grande')
                 this.logout();
             }
         }

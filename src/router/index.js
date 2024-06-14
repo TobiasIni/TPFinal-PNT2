@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory} from 'vue-router';
+import { useAuthStore } from '../stores/authStore';
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Perfil from '../views/Perfil.vue'
@@ -17,7 +18,7 @@ const routes = [
         name: 'Home',
         component: Home,
         meta: {
-            requiereAuth: true
+            requireAuth: true
         }
     },
     {
@@ -65,6 +66,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    useAuthStore().checkAuth();
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
     
     if(to.meta.requiereAuth && !isAuthenticated){
