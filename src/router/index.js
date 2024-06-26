@@ -6,6 +6,7 @@ import Perfil from '../views/Perfil.vue'
 import NotFound from '../views/NotFound.vue'
 import Carrito from '@/views/Carrito.vue';
 import CrearEvento from '@/views/CrearEvento.vue';
+import Detalles from '@/views/Detalles.vue';
 
 
 const routes = [
@@ -35,6 +36,14 @@ const routes = [
         component: Perfil,
         meta: {
             requiereAuth: true
+        }
+    },
+    {
+        path: '/detalles',
+        name: 'Detalles',
+        component: Detalles,
+        meta: {
+            requiereAuth: false
         }
     },
     {
