@@ -14,13 +14,8 @@ export const useAuthStore = defineStore('auth', {
     actions: {
         async login(username, password) {
             try {
-                const response = await axios.get(this.mockApiAuth)
-                const users = response.data
-                const user = users.find(user => user.username === username && user.password === password)
-                console.log('usuario logeado')
-                console.log(user)
-
-                if(user) {
+                const user = await this.getUserByUserName(username);
+                if(user.password === password) {
                     const currentTime = new Date().getTime();
                     this.isAuthenticated = true;
                     this.user = user;
@@ -52,31 +47,34 @@ export const useAuthStore = defineStore('auth', {
         async register(username, email, password, location, address, role) {
             if (username && email && password && location && address && role) {
                 try {
-                    const user = {
-                        username,
-                        email,
-                        password,
-                        address,
-                        location,
-                        role
-                    }
-                    console.log('usuario pasado al authstore')
-                    console.log(user)
-
-                    const response = await axios.post(this.mockApiAuth, user)
-                    const data = await response.data;
-                    console.log('Usuario persistido en mockAPI: ', data);
-
-                    this.isAuthenticated = true;
-                    this.user = response.data;
-                    localStorage.setItem('isAuthenticated', 'true')
-                    localStorage.setItem('user', JSON.stringify(user))
+                  const existingUser = await this.getUserByUserName(username, );
+                  if (existingUser) {
+                    alert('Nombre de usuario ya existe. Por favor, elija otro nombre de usuario.');
+                    return;
+                  }
+        
+                  const user = {
+                    username,
+                    email,
+                    password,
+                    address,
+                    location,
+                    role
+                  };
+        
+                  const response = await axios.post(this.mockApiAuth, user);
+                  const data = response.data;
+        
+                  this.isAuthenticated = true;
+                  this.user = data;
+                  localStorage.setItem('isAuthenticated', 'true');
+                  localStorage.setItem('user', JSON.stringify(this.user));
                 } catch (error) {
-                    console.log('ERROR: ', error);
+                  console.log('ERROR: ', error);
                 }
-            } else {
-                alert('Completá todos los datos')
-            }
+              } else {
+                alert('Completá todos los datos');
+              }
         },
         logout() {
             this.isAuthenticated = false;
@@ -110,6 +108,11 @@ export const useAuthStore = defineStore('auth', {
             } else {
                 this.logout();
             }
+        },
+        async getUserByUserName(username){
+            const response = await axios.get(this.mockApiAuth)
+            const users = response.data
+            return users.find(user => user.username === username)
         }
     }
 })

@@ -41,7 +41,7 @@ export default {
         const authStore = useAuthStore();
         await authStore.register(this.username, this.email, this.password, this.location, this.address, this.role);
         if (authStore.isAuthenticated) {
-          this.$router.push({ name: 'Home' });
+          this.$router.push({ name: 'Login' });
         }
       } else {
         alert('Completá todos los datos');
