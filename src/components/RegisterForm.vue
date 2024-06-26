@@ -3,9 +3,9 @@
     <h1>Registro</h1>
     <form @submit.prevent="register" class="register-form">
       <input v-model="username" type="text" placeholder="Username" class="register-input" required/>
-      <input v-model="password" type="password" placeholder="Password" class="register-input" required/>
       <input v-model="email" type="email" placeholder="Email" class="register-input" required/>
-      <input ref="locationInput" v-model="location" type="text" placeholder="Location" class="register-input" required/>
+      <input v-model="password" type="password" placeholder="Password" class="register-input" required/>
+      <input ref="locationInput" v-model="locationInput" type="text" placeholder="Adress" class="register-input" required/>
       <select v-model="role" class="register-input" required>
         <option disabled value="">Seleccione un rol</option>
         <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
@@ -25,30 +25,57 @@ export default {
       username: '',
       email: '',
       password: '',
-      location: '',
+      locationInput: '',
+      location: null,
       role: Roles.USER,
       roles: Object.values(Roles)
     };
   },
   mounted() {
-    this.initAutocomplete();
+    window.initAutocomplete = this.initAutocomplete;
+    this.loadGoogleMapsScript();
   },
   methods: {
     async register() {
-      const authStore = useAuthStore();
-      await authStore.register(this.username, this.email, this.password, this.location, this.role);
-      if (authStore.isAuthenticated) {
-        this.$router.push({ name: 'Home' });
+      if (this.location) {
+        const authStore = useAuthStore();
+        await authStore.register(this.username, this.email, this.password, this.location, this.role);
+        if (authStore.isAuthenticated) {
+          this.$router.push({ name: 'Home' });
+        }
+      } else {
+        alert('Completá todos los datos');
       }
+    },
+    loadGoogleMapsScript() {
+      const script = document.createElement('script');
+      script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyAUXnmpUG_EiV6dVHBrilwxQDeGhZnVO4k&libraries=places&callback=initAutocomplete`;
+      script.async = true;
+      script.defer = true;
+      document.head.appendChild(script);
     },
     initAutocomplete() {
       const locationInput = this.$refs.locationInput;
       const autocomplete = new google.maps.places.Autocomplete(locationInput, {
         types: ['geocode']
       });
-      autocomplete.addListener('place_changed', () => {
+      autocomplete.addListener('place_changed', async () => {
         const place = autocomplete.getPlace();
-        this.location = place.formatted_address;
+        this.location = await this.getCoordinates(place.formatted_address);
+      });
+    },
+    getCoordinates(address) {
+      return new Promise((resolve, reject) => {
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ address: address }, (results, status) => {
+          if (status === 'OK' && results[0]) {
+            const lat = results[0].geometry.location.lat();
+            const lng = results[0].geometry.location.lng();
+            resolve([lat, lng]);
+          } else {
+            reject('Geocode was not successful for the following reason: ' + status);
+          }
+        });
       });
     }
   }
