@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', {
                     console.log(this.isAdmin)
                     console.log(this.isEmployee)
                 }else{
-                    alert('Usuario o Contrasena no valido')
+                    alert('Usuario o contraseña no válido')
                 }
 
             } catch (error) {

@@ -7,25 +7,28 @@
           <router-link class="nav-link" to="/home">Home</router-link>
         </li>
         <li class="nav-item" v-if="isAuthenticated">
-          <router-link class="nav-link" to="/carrito">Carrito</router-link>
+          <router-link class="nav-link" to="/perfil">Perfil</router-link>
         </li>
         <li class="nav-item" v-if="isAuthenticated">
-          <router-link class="nav-link" to="/perfil">Perfil</router-link>
+          <router-link class="nav-link" to="/entradas">Mis entradas</router-link>
         </li>
         <li class="nav-item" v-if="isAdmin">
           <router-link class="nav-link" to="/crear-evento">Crear Evento</router-link>
         </li>
         <li class="nav-item" v-if="isAuthenticated">
-          <button @click="logout" class="nav-link logout-button">Logout</button>
+          <a @click="logout" class="nav-link logout-button">Logout</a>
         </li>
         <li class="nav-item" v-else>
           <router-link class="nav-link" to="/login">Login</router-link>
         </li>
         <li class="nav-item" v-if="isAuthenticated">
-          <span>Productos en Carrito: {{ cantidadCarrito }}</span>
+          <router-link class="nav-link" to="/carrito">
+            <i class="icon-shopping-cart"></i>
+            {{ cantidadCarrito }}
+          </router-link>
         </li>
       </ul>
-    </div>  
+    </div>
   </nav>
 </template>
 
@@ -77,7 +80,8 @@ export default {
 }
 
 .nav-container {
-  max-width: 1200px; /* Aumentar el tamaño máximo del contenedor */
+  max-width: 1200px;
+  /* Aumentar el tamaño máximo del contenedor */
   margin: auto;
   display: flex;
   justify-content: space-between;

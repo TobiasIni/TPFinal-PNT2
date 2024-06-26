@@ -1,27 +1,16 @@
 <template >
     <div class="cart-item">
         <img :src="item.imageUrl || 'default-image-url.jpg'" :alt="item.name || 'No Name Available'" class="cart-item-image" />
-        <!-- <img :src="item.image " :alt="item.title" class="cart-item-image"/> -->
         <div class="cart-item-info">
             <h3>{{item.name}}</h3>
-            <p>${{item.price}}</p>
         </div>
-        <button @click="removerDelCarrito" class="remove-button">X</button>
     </div>
 </template>
 <script>
 
-import { useEventStore } from '../stores/eventStore.js';
-
 export default {
     props: {
         item: Object
-    },
-    methods:{
-        removerDelCarrito(){
-            const eventStore = useEventStore()
-            eventStore.removerDelCarrito(this.item)
-        }
     }
 }
 </script>
