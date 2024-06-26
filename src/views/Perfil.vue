@@ -3,7 +3,7 @@
     <h2>Perfil</h2>
     <ul>
       <li><strong>Nombre: </strong>{{ user.username }}</li>
-      <li><strong>Ubicación: </strong>{{ user.location }}</li>
+      <li><strong>Ubicación: </strong>{{ user.address }}</li>
       <li><strong>Email: </strong>{{ user.email }}</li>
     </ul>
   </div>
@@ -13,7 +13,8 @@
 export default {
   computed: {
     user() {
-      return JSON.parse(localStorage.getItem('user'));
+      const user = localStorage.getItem('user');
+      return user ? JSON.parse(user) : null;
     }
   },
   mounted() {

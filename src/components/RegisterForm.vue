@@ -5,7 +5,7 @@
       <input v-model="username" type="text" placeholder="Username" class="register-input" required/>
       <input v-model="email" type="email" placeholder="Email" class="register-input" required/>
       <input v-model="password" type="password" placeholder="Password" class="register-input" required/>
-      <input ref="locationInput" v-model="locationInput" type="text" placeholder="Adress" class="register-input" required/>
+      <input ref="addressInput" v-model="address" type="text" placeholder="Address" class="register-input" required/>
       <select v-model="role" class="register-input" required>
         <option disabled value="">Seleccione un rol</option>
         <option v-for="role in roles" :key="role" :value="role">{{ role }}</option>
@@ -25,7 +25,7 @@ export default {
       username: '',
       email: '',
       password: '',
-      locationInput: '',
+      address: '',
       location: null,
       role: Roles.USER,
       roles: Object.values(Roles)
@@ -37,9 +37,9 @@ export default {
   },
   methods: {
     async register() {
-      if (this.location) {
+      if (this.location && this.address) {
         const authStore = useAuthStore();
-        await authStore.register(this.username, this.email, this.password, this.location, this.role);
+        await authStore.register(this.username, this.email, this.password, this.location, this.address, this.role);
         if (authStore.isAuthenticated) {
           this.$router.push({ name: 'Home' });
         }
@@ -55,13 +55,14 @@ export default {
       document.head.appendChild(script);
     },
     initAutocomplete() {
-      const locationInput = this.$refs.locationInput;
-      const autocomplete = new google.maps.places.Autocomplete(locationInput, {
+      const addressInput = this.$refs.addressInput;
+      const autocomplete = new google.maps.places.Autocomplete(addressInput, {
         types: ['geocode']
       });
       autocomplete.addListener('place_changed', async () => {
         const place = autocomplete.getPlace();
         this.location = await this.getCoordinates(place.formatted_address);
+        this.address = place.formatted_address;
       });
     },
     getCoordinates(address) {
@@ -73,7 +74,7 @@ export default {
             const lng = results[0].geometry.location.lng();
             resolve([lat, lng]);
           } else {
-            reject('Geocode was not successful for the following reason: ' + status);
+            reject('La obtencion de las coordenadas para la direccion dada falló: ' + status);
           }
         });
       });

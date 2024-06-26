@@ -17,6 +17,8 @@ export const useAuthStore = defineStore('auth', {
                 const response = await axios.get(this.mockApiAuth)
                 const users = response.data
                 const user = users.find(user => user.username === username && user.password === password)
+                console.log('usuario logeado')
+                console.log(user)
 
                 if(user) {
                     const currentTime = new Date().getTime();
@@ -47,16 +49,19 @@ export const useAuthStore = defineStore('auth', {
                 console.error('Error en Login: ', error)
             }
         },
-        async register(username, email, password, location, role) {
-            if (username && email && password && location && role) {
+        async register(username, email, password, location, address, role) {
+            if (username && email && password && location && address && role) {
                 try {
                     const user = {
                         username,
                         email,
                         password,
+                        address,
                         location,
                         role
                     }
+                    console.log('usuario pasado al authstore')
+                    console.log(user)
 
                     const response = await axios.post(this.mockApiAuth, user)
                     const data = await response.data;
