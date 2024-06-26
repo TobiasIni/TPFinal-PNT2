@@ -3,6 +3,7 @@
     <h1>Registro</h1>
     <form @submit.prevent="register" class="register-form">
       <input v-model="username" type="text" placeholder="Username" class="register-input" required/>
+      <input v-model="password" type="password" placeholder="Password" class="register-input" required/>
       <input v-model="email" type="email" placeholder="Email" class="register-input" required/>
       <input ref="locationInput" v-model="location" type="text" placeholder="Location" class="register-input" required/>
       <select v-model="role" class="register-input" required>
