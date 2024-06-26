@@ -3,36 +3,78 @@
         <h1>Tu carrito</h1>
         <p>Productos en carrito: {{ cantidadCarrito }}</p>
         <div class="cart-items">
-            <CartItem v-for="producto in productosCarrito" :key="producto.id" :item="producto"/>
+            <CartItem v-for="producto in productosCarrito" :key="producto.id" :item="producto" />
         </div>
     </div>
+    <button @click="realizarCompra" class="compra-button">
+        Realizar compra
+    </button>
 </template>
 <script>
+
 import { useEventStore } from '../stores/eventStore.js';
 import CartItem from '../components/CartItem.vue'
 
 export default {
-    components:{
+    props: {
+        item: Object
+    },
+    components: {
         CartItem
     },
-    computed:{
-        cantidadCarrito(){
+    computed: {
+        cantidadCarrito() {
             const eventStore = useEventStore();
             return eventStore.cantidadCarrito;
         },
-        productosCarrito(){
+        productosCarrito() {
             const eventStore = useEventStore();
             return eventStore.cart
+        },
+        realizarCompra() {
+            const eventStore = useEventStore();
+            const productos = eventStore.cart;
+
+            let misEntradas = JSON.parse(localStorage.getItem('misEntradas')) || [];
+
+            if (misEntradas.length > 0) {
+                misEntradas.push(...productos);
+            } else {
+                misEntradas = productos;
+            }
+
+            localStorage.setItem('misEntradas', JSON.stringify(misEntradas));
+
+            localStorage.setItem('cart', JSON.stringify([]));
+
+            eventStore.resetCarrito();
+            this.$router.push({ name: 'Entradas' })
         }
     }
-    
+
 }
 </script>
 <style>
-    .cart-view{
-        padding: 1rem
-    }
-    .cart-items{
-        margin-top: 1rem
-    }
+.cart-view {
+    padding: 1rem
+}
+
+.cart-items {
+    margin-top: 1rem
+}
+
+button {
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.3s;
+}
+
+.compra-button {
+    font-weight: 600;
+    display: flex
+}
 </style>

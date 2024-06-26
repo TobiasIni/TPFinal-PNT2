@@ -7,6 +7,7 @@ export const useEventStore = defineStore('eventStore', {
     mockApiEventsUrl: 'https://665f8ef85425580055b01bf5.mockapi.io/events/events/',
     eventsProviderUrl: 'https://api.seatgeek.com/2/events?client_id=NDE4ODk4ODJ8MTcxNzAyNDc0MS44MjkzMjcz',
     cart: JSON.parse(localStorage.getItem('cart')) || [], // Obtener del local Storage 
+    misEntradas: JSON.parse(localStorage.getItem('misEntradas')) || [],
     detail: JSON.parse(localStorage.getItem('event')) || []
   }),
   getters: {
@@ -32,7 +33,6 @@ export const useEventStore = defineStore('eventStore', {
         // que se refresca el navegador
         const estaInicializada = localStorage.getItem('dbInicializada');
         if (estaInicializada) {
-          console.log('Base de datos INICIALIZADA.');
           return;
         }
         // Hago un get para chequear si la BD está vacía
@@ -95,6 +95,10 @@ export const useEventStore = defineStore('eventStore', {
         }
         localStorage.setItem('cart', JSON.stringify(this.cart));
       }
+    },
+    resetCarrito() {
+      this.cart = []; // Vacía el carrito
+      localStorage.setItem('cart', JSON.stringify(this.cart)); // Actualiza el localStorage
     },
     async agregarEvento(nuevoEvento) {
       try {

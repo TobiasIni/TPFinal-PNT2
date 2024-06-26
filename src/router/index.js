@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory} from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
@@ -7,6 +7,7 @@ import NotFound from '../views/NotFound.vue'
 import Carrito from '@/views/Carrito.vue';
 import CrearEvento from '@/views/CrearEvento.vue';
 import Detalles from '@/views/Detalles.vue';
+import Entradas from '@/views/Entradas.vue'
 
 
 const routes = [
@@ -50,7 +51,15 @@ const routes = [
         path: '/carrito',
         name: 'Carrito',
         component: Carrito,
-        meta:{
+        meta: {
+            requiereAuth: true
+        }
+    },
+    {
+        path: '/entradas',
+        name: 'Entradas',
+        component: Entradas,
+        meta: {
             requiereAuth: true
         }
     },
@@ -77,13 +86,13 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
     useAuthStore().checkAuth();
     const isAuthenticated = localStorage.getItem('isAuthenticated') === 'true';
-    
-    if(to.meta.requiereAuth && !isAuthenticated){
-        next({name:'Login'})
+
+    if (to.meta.requiereAuth && !isAuthenticated) {
+        next({ name: 'Login' })
     }
-    else{
+    else {
         next();
     }
- })
+})
 
 export default router

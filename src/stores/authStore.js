@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('auth', {
                     localStorage.setItem('sessionStart', currentTime);
                     localStorage.setItem('sessionDuration', this.sessionDuration);
                 }else{
-                    alert('Usuario o Contrasena no valido')
+                    alert('Usuario o contraseña no válido')
                 }
 
             } catch (error) {
