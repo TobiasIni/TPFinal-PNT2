@@ -33,7 +33,21 @@ export default {
         },
         realizarCompra() {
             const eventStore = useEventStore();
-            eventStore.comprarEntradas();
+            const productos = eventStore.cart;
+
+            let misEntradas = JSON.parse(localStorage.getItem('misEntradas')) || [];
+
+            if (misEntradas.length > 0) {
+                misEntradas.push(...productos);
+            } else {
+                misEntradas = productos;
+            }
+
+            localStorage.setItem('misEntradas', JSON.stringify(misEntradas));
+
+            localStorage.setItem('cart', JSON.stringify([]));
+
+            eventStore.resetCarrito();
             this.$router.push({ name: 'Entradas' })
         }
     }

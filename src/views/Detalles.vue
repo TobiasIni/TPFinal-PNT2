@@ -16,22 +16,17 @@
 
 <script>
 import { useEventStore } from '../stores/eventStore.js';
+import detailItem from '../components/DetailItem.vue'
 
 export default {
-  data() {
-    return {
-      evento: null,
-      review: ''
-    };
-  },
-  mounted() {
-    this.fetchEvento();
-    this.generateReview();
-  },
-  methods: {
-    fetchEvento() {
+  components:{
+  detailItem
+  } ,
+    computed:{
+      fetchEvento() {
       const eventStore = useEventStore();
-      this.evento = eventStore.detail;
+      this.evento = eventStore.obtenerEventoPorId(Number(this.id));
+      console.log(this.evento)
     },
     generateReview() {
       const reviews = [
@@ -44,7 +39,9 @@ export default {
       this.review = reviews[Math.floor(Math.random() * reviews.length)];
     }
   }
-};
+    }
+
+
 </script>
 
 <style scoped>

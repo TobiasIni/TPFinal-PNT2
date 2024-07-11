@@ -87,9 +87,6 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('user');
             localStorage.removeItem('sessionStart');
             localStorage.removeItem('sessionDuration');
-            localStorage.removeItem('misEntradas');
-            localStorage.removeItem('detail')
-            localStorage.removeItem('event')
         },
         checkAuth() {
             const sessionStart = localStorage.getItem('sessionStart');
