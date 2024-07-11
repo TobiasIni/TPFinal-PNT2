@@ -96,9 +96,24 @@ export const useEventStore = defineStore('eventStore', {
         localStorage.setItem('cart', JSON.stringify(this.cart));
       }
     },
-    resetCarrito() {
-      this.cart = []; // Vacía el carrito
-      localStorage.setItem('cart', JSON.stringify(this.cart)); // Actualiza el localStorage
+    vistaDetalles(evento) {
+      this.detail = evento;
+      localStorage.setItem('detail', JSON.stringify(this.detail))
+    },
+    comprarEntradas() {
+      const productos = this.cart;
+      let misEntradas = this.misEntradas
+
+      if (misEntradas.length > 0) {
+        misEntradas.push(...productos);
+      } else {
+        misEntradas = productos;
+      }
+
+      localStorage.setItem('misEntradas', JSON.stringify(misEntradas));
+
+      localStorage.setItem('cart', JSON.stringify([]));
+
     },
     async agregarEvento(nuevoEvento) {
       try {

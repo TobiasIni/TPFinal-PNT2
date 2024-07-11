@@ -13,24 +13,16 @@ export const useAuthStore = defineStore('auth', {
     }),
     actions: {
         async login(username, password) {
-            console.log("isEmployee: " + this.isEmployee)
             try {
-                console.log("isEmployee: " + this.isEmployee)
                 const response = await axios.get(this.mockApiAuth)
                 const users = response.data
                 const user = users.find(user => user.username === username && user.password === password)
-                console.log("isEmployee: " + this.isEmployee)
 
                 if(user) {
-                    console.log("isEmployee: " + this.isEmployee)
                     const currentTime = new Date().getTime();
                     this.isAuthenticated = true;
                     this.user = user;
 
-                    console.log("isEmployee: " + this.isEmployee)
-
-                    console.log("estoy dentro del if grande ANTES de la validacion isAdmin")
-                    console.log(user)
                     if(user.role.toUpperCase() === Roles.ADMIN){
                         console.log("isEmployee: " + this.isEmployee)
                         console.log("Role Admin validado")
@@ -40,8 +32,6 @@ export const useAuthStore = defineStore('auth', {
                         console.log("Role employee validado")
                         this.isEmployee = true;
                     }
-
-                    console.log("isEmployee: " + this.isEmployee)
                     
                     localStorage.setItem('isAuthenticated', 'true')
                     localStorage.setItem('isAdmin', this.isAdmin ? 'true' : 'false')
@@ -49,9 +39,6 @@ export const useAuthStore = defineStore('auth', {
                     localStorage.setItem('isEmployee', this.isEmployee ? 'true' : 'false')
                     localStorage.setItem('sessionStart', currentTime);
                     localStorage.setItem('sessionDuration', this.sessionDuration);
-                    console.log('test')
-                    console.log(this.isAdmin)
-                    console.log(this.isEmployee)
                 }else{
                     alert('Usuario o contraseña no válido')
                 }
@@ -71,14 +58,9 @@ export const useAuthStore = defineStore('auth', {
                         role
                     }
 
-                    console.log('usuario : ', user);
-
                     const response = await axios.post(this.mockApiAuth, user)
-
-                    console.log('RESPONSE: ', response);
                     const data = await response.data;
-
-                    console.log('LA DATA: ', data);
+                    console.log('Usuario persistido en mockAPI: ', data);
 
                     this.isAuthenticated = true;
                     this.user = response.data;
@@ -86,7 +68,6 @@ export const useAuthStore = defineStore('auth', {
                     localStorage.setItem('user', JSON.stringify(user))
                 } catch (error) {
                     console.log('ERROR: ', error);
-
                 }
             } else {
                 alert('Completá todos los datos')
@@ -103,6 +84,9 @@ export const useAuthStore = defineStore('auth', {
             localStorage.removeItem('user');
             localStorage.removeItem('sessionStart');
             localStorage.removeItem('sessionDuration');
+            localStorage.removeItem('misEntradas');
+            localStorage.removeItem('detail')
+            localStorage.removeItem('event')
         },
         checkAuth() {
             const sessionStart = localStorage.getItem('sessionStart');
