@@ -1,7 +1,8 @@
 <template>
   <nav class="navbar">
     <div class="nav-container">
-      <a class="navbar-brand" href="#">HOY SALGO</a>
+      <a class="navbar-brand" href="/home">HOY SALGO
+      </a>
       <ul class="nav-list">
         <li class="nav-item" v-if="isAuthenticated">
           <router-link class="nav-link" to="/home">Home</router-link>
